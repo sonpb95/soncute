@@ -168,8 +168,21 @@ class Campaign extends Model
 		return $category->get('0')->name;
 	}
 
-  public function getCommentsCount() {
-    return $this->comments()->count();
-  }
-
+	public function getCommentsCount() {
+		return $this->comments()->count();
+	}
+	
+	public function checkExpired() {
+		$endAt = new DateTime($this->end_at);
+		$now = new DateTime();
+		if ($endAt < $now) {
+			$this->priority = null;
+			$this->status = 3;
+			$this->save();
+			return 'true';
+		} else {
+			return 'false';
+		}
+	}
+	
 }

@@ -307,20 +307,20 @@
                                   </div><!--end: .comment-item -->
                               </div>
                             @endforeach
-							                <div class="wrapper-box box-post-comment">
-								                  <form method="POST" action="/comment/{{ $campaign->id }}">
-									                   {{ csrf_field() }}
-									                   <div class="form form-post-comment">
-											                  <label for="txt_content_comment">
-												                   <textarea name="comment" id="txt_content_comment" cols="30" rows="10" class="txt fill-width" placeholder="Your comment "></textarea>
-											                  </label>
-										                    <div class="clear"></div>
-										                       <p class="rs ta-r clearfix">
-										                         <input type="submit" class="btn btn-white btn-submit-comment" value="Submit">
-									                         </p>
-									                  </div>
-								                 </form>
-							              </div><!--end: .box-list-comment -->
+							<div class="wrapper-box box-post-comment">
+								  <form method="POST" action="/comment/{{ $campaign->id }}">
+									   {{ csrf_field() }}
+									   <div class="form form-post-comment">
+											  <label for="txt_content_comment">
+												   <textarea name="comment" id="txt_content_comment" cols="30" rows="10" class="txt fill-width" placeholder="Your comment "></textarea>
+											  </label>
+											<div class="clear"></div>
+											   <p class="rs ta-r clearfix">
+												 <input type="submit" class="btn btn-white btn-submit-comment" value="Submit">
+											 </p>
+									  </div>
+								 </form>
+						  </div><!--end: .box-list-comment -->
                         </div><!--end: .tab-pane(Comments) -->
                       </div>
                     </div>

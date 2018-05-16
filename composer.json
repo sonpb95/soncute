@@ -9,13 +9,12 @@
         "algolia/algoliasearch-client-php": "^1.25",
         "braintree/braintree_php": "^3.31",
         "fideloper/proxy": "~3.3",
-        "intervention/image": "^2.4",
+        "intervention/image": "dev-master",
         "laravel/framework": "5.5.*",
         "laravel/scout": "^4.0",
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
-        "teamtnt/laravel-scout-tntsearch-driver": "^3.0",
-		"intervention/image": "dev-master"
+        "teamtnt/laravel-scout-tntsearch-driver": "^3.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
@@ -31,12 +30,14 @@
             "database/factories"
         ],
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+			"Bosnadev\\Repositories\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "tests/",
+			"Bosnadev\\Tests\\Repositories\\": "tests/"
         }
     },
     "extra": {

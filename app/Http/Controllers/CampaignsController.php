@@ -5,7 +5,8 @@ use Illuminate\Routing\Route;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use DateTime;
-use App\Campaign;
+use App\Repositories\CampaignRepository as Campaign;
+//use App\Campaign;
 use App\Comment;
 use App\UserDetail;
 use App\Tag;
@@ -27,20 +28,15 @@ use Storage;
 
 class CampaignsController extends Controller
 {
-	public function checkExpired(Campaign $campaign) {
-		$endAt = new DateTime($campaign->end_at);
-		$now = new DateTime();
-		if ($endAt < $now) {
-			$campaign->priority = null;
-			$campaign->status = 3;
-			$campaign->save();
-			return 'true';
-		} else {
-			return 'false';
-		}
-	}
+    protected $campaign;
 
-	public function show(Campaign $campaign, $tabId = 1) {
+    public function __construct(Campaign $campaign) {
+
+        $this->campaign = $campaign;
+    }
+
+	public function show($id, $tabId = 1) {
+		$campaign = $this->campaign->find($id);
 		if ($campaign->delete_flag == 1 || $campaign->status == 0 || $campaign->status == 2) {
 			return redirect()->back()->with("error","Dự án đã bị xoá hoặc không tồn tại, vui lòng xem các dự án khác.");
 		}
@@ -50,13 +46,14 @@ class CampaignsController extends Controller
 		$videos = $campaign->videos()->get();
 		$perks = $campaign->perks()->where('delete_flag', 0)->orderBy('price', 'ASC')->get();
 		$comments = $campaign->comments()->orderBy('created_at', 'DESC')->get();
-
-		$isExpired = $this->checkExpired($campaign);
+		//$isExpired = 'true';
+		$isExpired = $campaign->checkExpired();
 
 		return view('campaigns.project', compact('campaign', 'photos', 'perks', 'backers', 'author', 'comments', 'tabId', 'videos', 'isExpired'));
 	}
 
-	public function follow(Campaign $campaign) {
+	public function follow($id) {
+		$campaign = $this->campaign->find($id);
 		if (Auth::check()) {
 			$follow = Auth::user()->follows()->where('campaign_id', $campaign->id)->first();
 			if(is_null($follow)) {

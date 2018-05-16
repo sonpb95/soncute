@@ -24,7 +24,7 @@ Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );
 Route::get('/', 'PageController@index')->name('index');
 
 //campaigns show
-Route::get('/campaigns/{campaign}', 'CampaignsController@show');
+Route::get('/campaigns/{id}', 'CampaignsController@show');
 Route::get('/campaigns/{campaign}/{tabId}', 'CampaignsController@show');
 
 // campaigns create
@@ -133,7 +133,7 @@ Route::get('/redirect/{social}', 'SocialAuthController@redirect');
 Route::get('/callback/{social}', 'SocialAuthController@callback');
 
 //action
-Route::get('/follow/{campaign}', 'CampaignsController@follow');
+Route::get('/follow/{id}', 'CampaignsController@follow');
 Route::post('/comment/{id}', 'CampaignsController@comment');
 
 ?>
