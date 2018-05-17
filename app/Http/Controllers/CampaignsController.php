@@ -6,19 +6,17 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use DateTime;
 use App\Repositories\CampaignRepository as Campaign;
-//use App\Campaign;
-use App\Comment;
+use App\Repositories\TagRepository as Tag;
+use App\Repositories\ItemRepository as Item;
+use App\Repositories\PerkRepository as Perk;
+use App\Repositories\VideoRepository as Video;
+use App\Repositories\PhotoRepository as Photo;
+use App\Repositories\CategoryRepository as Category;
+use App\Repositories\ContributionRepository as Contribution;
+use App\Repositories\FinancialInformationRepository as FinancialInformation;
+use App\Repositories\ReportCampaignRepository as ReportCampaign;
+use App\Repositories\FollowRepository as Follow;
 use App\UserDetail;
-use App\Tag;
-use App\Item;
-use App\Perk;
-use App\Video;
-use App\Photo;
-use App\Category;
-use App\Contribution;
-use App\FinancialInformation;
-use App\ReportCampaign;
-use App\Follow;
 use App\Mail\Warning;
 use App\Mail\Notification;
 use Auth;
@@ -30,9 +28,40 @@ class CampaignsController extends Controller
 {
     protected $campaign;
 
-    public function __construct(Campaign $campaign) {
+    protected $tag;
+
+    protected $item;
+
+    protected $perk;
+
+    protected $video;
+
+    protected $photo;
+
+    protected $category;
+
+    protected $contribution;
+
+    protected $reportcampaign;
+
+    protected $financialinformation;
+
+    protected $follow;
+
+    public function __construct(Campaign $campaign, Tag $tag, Item $item, Perk $perk, Video $video, Photo $photo, Category $category, Contribution $contribution, FinancialInformation $financialinformation, ReportCampaign $reportcampaign, Follow $follow) {
 
         $this->campaign = $campaign;
+        $this->tag = $tag;
+	    $this->item = $item;
+        $this->perk = $perk;
+        $this->video = $video;
+        $this->photo = $photo;
+        $this->category = $category;
+        $this->contribution = $contribution;
+        $this->financialinformation = $financialinformation;
+        $this->reportcampaign = $reportcampaign;
+        $this->follow = $follow;
+
     }
 
 	public function show($id, $tabId = 1) {
@@ -57,10 +86,10 @@ class CampaignsController extends Controller
 		if (Auth::check()) {
 			$follow = Auth::user()->follows()->where('campaign_id', $campaign->id)->first();
 			if(is_null($follow)) {
-				$follow = new Follow();
-				$follow->user_id = Auth::id();
-				$follow->campaign_id = $campaign->id;
-				$follow->save();
+                $follow = $this->follow->create([
+                    'user_id' => Auth::id(),
+                    'campaign_id' => $campaign->id,
+                    ]);
 				return 'followed';
 			} else {
 				$follow->delete();
@@ -104,15 +133,14 @@ class CampaignsController extends Controller
 			]);
 			$now = new DateTime();
 			$exc = $this->getVndExchangeRate();
-			$campaign = new Campaign();
-			$data = Campaign::create([
+			$data = $this->campaign->create([
 				'user_id' => Auth::id(),
 				'goal' => str_replace(',', '', request('goal')),
 				'title' => request('title'),
 				'exchange_rate' => $exc,
 				'end_at' => $now->modify('+ 60 day'),
 			]);
-			if($campaign){
+			if($data){
 				return redirect()->route('basic', ['id' => $data->id]);
 			}
 
@@ -121,8 +149,8 @@ class CampaignsController extends Controller
 
 	public function basic($id){
 		//$id = $request->query('id');
-
-		$campaign = Campaign::find($id);
+		$campaign = $this->campaign->find($id);
+		//$campaign = Campaign::find($id);
 
 		if($campaign->user_id != Auth::id())
 		{
@@ -156,7 +184,7 @@ class CampaignsController extends Controller
 			'categories' => 'required',
 			'duration' => 'required|max:255',
 		]);
-		$campaign = Campaign::find($id);
+		$campaign = $this->campaign->find($id);
 		$campaign->priority = $id;
 		if($campaign->user_id != Auth::id())
 		{
@@ -173,7 +201,6 @@ class CampaignsController extends Controller
 			$img = $fileName;
 
 		}
-		//var_dump($campaign->tags); die;
 
 		$campaign->title = $request->title;
 		$campaign->tagline = $request->tagline;
@@ -184,13 +211,12 @@ class CampaignsController extends Controller
 			$campaign->avatar = $img;
 		}
 		$campaign->save();
-		$tag = new Tag();
 
 		$string = $request->tags;
 		$token = strtok($string, ", ");
 		while ($token !== false)
 		   {
-			$tag = Tag::create([
+			$tag = $this->tag->create([
 			'title' => $token,
 			]);
 			$campaign->tags()->attach($tag->id);
@@ -202,7 +228,7 @@ class CampaignsController extends Controller
 	public function story($id)
 	{
 	//$id = $request->query('id');
-	$campaign = Campaign::find($id);
+	$campaign = $this->campaign->find($id);
 	if($campaign->user_id != Auth::id())
 	{
 		return redirect('');
@@ -238,7 +264,7 @@ class CampaignsController extends Controller
 
 	public function storystore(Request $request, $id)
 	{
-	$campaign = Campaign::find($id);
+	$campaign = $this->campaign->find($id);
 	if($campaign->user_id != Auth::id())
 	{
 		return redirect('');
@@ -283,7 +309,7 @@ class CampaignsController extends Controller
 	public function perk($id)
 	{
 	//$id = $request->query('id');
-	$campaign = Campaign::find($id);
+	$campaign = $this->campaign->find($id);
 	if($campaign->user_id != Auth::id())
 	{
 		return redirect('');
@@ -303,7 +329,7 @@ class CampaignsController extends Controller
 	public function perkcreate(Request $request, $id)
 	{
 
-	$campaign = Campaign::find($id);
+	$campaign = $this->campaign->find($id);
 	if($campaign->user_id != Auth::id())
 	{
 		return redirect('');
@@ -378,7 +404,7 @@ class CampaignsController extends Controller
 	public function perkedit(Request $request, $id)
 	{
 		$perks = Perk::find($id);
-		$campaign = Campaign::find($perks->campaign_id);
+		$campaign = $this->campaign->find($perks->campaign_id);
 		if($campaign->user_id != Auth::id())
 		{
 			return redirect('');
@@ -453,7 +479,7 @@ class CampaignsController extends Controller
 	public function perkdelete($id)
 	{
 		$perk = Perk::find($id);
-		$campaign = Campaign::find($perk->campaign_id);
+		$campaign = $this->campaign->find($perk->campaign_id);
 		if($campaign->user_id != Auth::id())
 		{
 			return redirect('');
@@ -483,7 +509,7 @@ class CampaignsController extends Controller
 	public function itemcreate($id)
 	{
 		//$id = $request->query('id');
-		$campaign = Campaign::find($id);
+		$campaign = $this->campaign->find($id);
 		if($campaign->user_id != Auth::id())
 		{
 			return redirect('');
@@ -513,7 +539,7 @@ class CampaignsController extends Controller
 	public function itemedit(Request $request, $id)
 	{
 		$items = Item::find($id);
-		$campaign = Campaign::find($items->campaign_id);
+		$campaign = $this->campaign->find($items->campaign_id);
 		if($campaign->user_id != Auth::id())
 		{
 			return redirect('');
@@ -539,7 +565,7 @@ class CampaignsController extends Controller
 		$item->option_name = $request->option_name;
 		$item->option_value = $request->option_value;
 		$item->save();
-		$campaign = Campaign::find($item->campaign_id);
+		$campaign = $this->campaign->find($item->campaign_id);
 		$items = Item::with('perks')->where('campaign_id', $item->campaign_id)->get();
 
 		return view('/campaigns/item')->with('id',$campaign->id)
@@ -551,7 +577,7 @@ class CampaignsController extends Controller
 	public function itemdelete($id)
 	{
 		$item = Item::find($id);
-		$campaign = Campaign::find($item->campaign_id);
+		$campaign = $this->campaign->find($item->campaign_id);
 		if($campaign->user_id != Auth::id())
 		{
 			return redirect('');
@@ -568,12 +594,12 @@ class CampaignsController extends Controller
 			return redirect('');
 		}
 		$currenttime = new DateTime();
-		$prepair_campaigns = Campaign::where([['status', '=', '0'], ['delete_flag', '=', '0']])->get();
-		$campaigns = Campaign::where([['status', '=', '1'], ['delete_flag', '=', '0']])->get();
-		$end_campaigns = Campaign::where([['end_at', '<=', $currenttime], ['delete_flag', '=', '0']])->get();
+        $prepair_campaigns = $this->campaign->findWhere([['status', '=', '0'], ['delete_flag', '=', '0']]);
+        $campaigns = $this->campaign->findWhere([['status', '=', '1'], ['delete_flag', '=', '0']]);
+		$end_campaigns = $this->campaign->findWhere([['end_at', '<=', $currenttime], ['delete_flag', '=', '0']]);
 		$report_campaigns = ReportCampaign::with('campaigns')->distinct()->get(['campaign_id']);
-		$stopped_campaigns = Campaign::where([['status', '=', '2'], ['delete_flag', '=', '0']])->get();
-		$cancel_campaigns = Campaign::where([['delete_flag', '=', '1']])->get();
+		$stopped_campaigns = $this->campaign->findWhere([['status', '=', '2'], ['delete_flag', '=', '0']]);
+		$cancel_campaigns = $this->campaign->findWhere([['delete_flag', '=', '1']]);
 		// se bi loi Trying to get property of non-object neu co gia tri null
 		 /* status :
 				0 = invisible
@@ -626,7 +652,7 @@ class CampaignsController extends Controller
 		if(!UserDetail::where([['is_admin' ,'=' ,1],['user_id','=' , Auth::id()]])->first()){
 			return redirect('');
 		}
-		$campaign = Campaign::find($id);
+		$campaign = $this->campaign->find($id);
 		$campaign->status = 2;
 		$campaign->save();
 		\Mail::to($campaign->user)->send(new Warning($campaign));
@@ -643,7 +669,7 @@ class CampaignsController extends Controller
 		if(!UserDetail::where([['is_admin' ,'=' ,1],['user_id','=' , Auth::id()]])->first()){
 			return redirect('');
 		}
-		$campaign = Campaign::find($id);
+		$campaign = $this->campaign->find($id);
 		$campaign->status = 1;
 		$campaign->save();
 		return back();
@@ -654,7 +680,7 @@ class CampaignsController extends Controller
 		if(!UserDetail::where([['is_admin' ,'=' ,1],['user_id','=' , Auth::id()]])->first()){
 			return redirect('');
 		}
-		$campaign = Campaign::find($id);
+		$campaign = $this->campaign->find($id);
 		$campaign->delete_flag = 1;
 		$campaign->save();
 		return back();
@@ -662,7 +688,7 @@ class CampaignsController extends Controller
 
 	public function launchcampaign(Request $request, $id)
 	{
-		$campaign = Campaign::find($id);
+		$campaign = $this->campaign->find($id);
 		$currenttime = new DateTime();
 		if($campaign->user_id != Auth::id())
 		{
@@ -762,7 +788,7 @@ class CampaignsController extends Controller
 	}
 
 	public function overview($id) {
-		$campaign = Campaign::find($id);
+		$campaign = $this->campaign->find($id);
 		if($campaign->user_id != Auth::id())
 		{
 			return redirect('');
@@ -788,7 +814,7 @@ class CampaignsController extends Controller
 	public function financialInformation($id)
 	{
 
-		$campaign = Campaign::find($id);
+		$campaign = $this->campaign->find($id);
 		if($campaign->user_id != Auth::id())
 		{
 			return redirect('');
@@ -824,7 +850,7 @@ class CampaignsController extends Controller
 			'branch' => 'required',
 		]);
 
-		$campaign = Campaign::find($id);
+		$campaign = $this->campaign->find($id);
 		if($campaign->user_id != Auth::id())
 		{
 			return redirect('');
@@ -891,45 +917,8 @@ class CampaignsController extends Controller
 
 		return view('/campaigns/reportView')->with('report',$report);
 	}
-	/**
-	* Display the specified resource.
-	*
-	* @param  int  $id
-	* @return \Illuminate\Http\Response
-	*/
 
-
-	/**
-	* Show the form for editing the specified resource.
-	*
-	* @param  int  $id
-	* @return \Illuminate\Http\Response
-	*/
-	public function comment(Request $request, $id)
-	{
-		$request->validate([
-			'comment' => 'required',
-		]);
-		if(!Auth::id()){
-			return redirect('/login')->with("failed","Bạn cần đăng nhập để thực hiện chức năng này !");
-		}
-			$comment = new Comment();
-			$comment->user_id = Auth::id();
-			$comment->campaign_id = $id;
-			$comment->text = $request->comment;
-			$comment->save();
-			$campaign = Campaign::find($id);
-			$author = $campaign->user()->get();
-			$backers = $campaign->getBackerList();
-			$photos = $campaign->photos()->get();
-			$perks = $campaign->perks()->orderBy('price', 'ASC')->get();
-			$comments = Comment::where([['campaign_id' ,'=' ,$campaign->id]])->get();
-			$videos = $campaign->videos()->get();
-		  //var_dump($comments); die;
-		  $tabId = 4;
-			$isExpired = $this->checkExpired($campaign);
-		  return view('campaigns.project', compact('campaign', 'photos', 'perks', 'backers', 'author', 'comments', 'tabId', 'videos', 'isExpired'));
-	}
+	
 
 	public function investerlist($id)
 	{

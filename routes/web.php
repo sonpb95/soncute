@@ -134,6 +134,6 @@ Route::get('/callback/{social}', 'SocialAuthController@callback');
 
 //action
 Route::get('/follow/{id}', 'CampaignsController@follow');
-Route::post('/comment/{id}', 'CampaignsController@comment');
+Route::post('/comment/{id}', 'CommentController@comment');
 
 ?>

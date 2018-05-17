@@ -31,13 +31,13 @@
         ],
         "psr-4": {
             "App\\": "app/",
-			"Bosnadev\\Repositories\\": "src/"
+			
         }
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/",
-			"Bosnadev\\Tests\\Repositories\\": "tests/"
+			
         }
     },
     "extra": {
