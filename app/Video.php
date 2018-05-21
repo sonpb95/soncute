@@ -8,7 +8,7 @@ class Video extends Model
 {
     protected $fillable = [
 
-        'link', 'delete_flag'
+       'campaign_id' ,'link' ,'delete_flag'
 
     ];
 	

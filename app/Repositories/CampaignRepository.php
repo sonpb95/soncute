@@ -15,4 +15,5 @@ class CampaignRepository extends Repository {
     {
         return 'App\Campaign';
     }
+
 }

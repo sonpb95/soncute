@@ -17,4 +17,6 @@ interface RepositoryInterface {
 
     public function findWhere($where, $columns = array('*'));
 
+    public function with($relations);
+
 }

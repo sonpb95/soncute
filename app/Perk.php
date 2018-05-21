@@ -8,7 +8,7 @@ class Perk extends Model
 {
     protected $fillable = [
 
-        'price', 'retail_price', 'title', 'included_items', 'description', 'photo_id', 'total_quantily', 'estimated_delivery_date', 'ship', 'buy_number'
+        'campaign_id' ,'price', 'retail_price', 'title', 'included_items', 'description', 'photo_id', 'total_quantily', 'estimated_delivery_date', 'ship', 'buy_number'
 
     ];
 	

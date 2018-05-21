@@ -15,8 +15,8 @@ class Category extends Model
 	 public $timestamps = false;
 
 	 public function campaigns() {
-    return $this->hasMany(Campaign::class);
-	  }
+		return $this->hasMany(Campaign::class);
+	 }
 
 	  public function staffPick() {
 		return $this->belongsTo(StaffPick::class);

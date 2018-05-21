@@ -15,4 +15,8 @@ class ReportCampaignRepository extends Repository {
     {
         return 'App\ReportCampaign';
     }
+
+    public function getReportedCampaign(){
+        return $this->model->with('campaigns')->distinct()->get(['campaign_id']);
+    }
 }

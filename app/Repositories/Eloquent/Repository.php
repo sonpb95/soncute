@@ -49,6 +49,16 @@ abstract class Repository implements RepositoryInterface {
     }
 
     /**
+     * @param $relations
+     * @return $this
+     */
+    public function with($relations)
+    {
+        $this->model = $this->model->with($relations);
+        return $this;
+    }
+
+    /**
      * @param int $perPage
      * @param array $columns
      * @return mixed
@@ -101,10 +111,6 @@ abstract class Repository implements RepositoryInterface {
     public function findBy($attribute, $value, $columns = array('*')) {
         return $this->model->where($attribute, '=', $value)->first($columns);
     }
-    
-    //public function findWhere($condition = array('*'), $columns = array('*')){
-    //    return $this->model->where($condition)->get($columns);
-    //}
 
     /**
      * Find a collection of models by the given query conditions.
@@ -143,6 +149,10 @@ abstract class Repository implements RepositoryInterface {
             }
         }
         return $model->get($columns);
+    }
+	
+	public function orderBy($columnName, $sortType) {
+        return $this->model->orderBy($columnName, $sortType);
     }
 
     /**

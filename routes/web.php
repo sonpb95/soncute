@@ -42,48 +42,48 @@ Route::post('/videostore/{id}', 'CampaignsController@videostore')->name('videost
 Route::post('/storystore/{id}', 'CampaignsController@storystore')->name('storystore');
 
 //perk
-Route::get('/perk/{id}', ['middleware' => 'auth', 'uses' => 'CampaignsController@perk'])->name('perk');
-Route::get('/perkcreate/{id}', ['middleware' => 'auth', 'uses' => 'CampaignsController@perkcreate'])->name('perkcreate');
-Route::post('/perkstore/{id}', 'CampaignsController@perkstore')->name('perkstore');
-Route::get('/perkedit/{id}', ['middleware' => 'auth', 'uses' => 'CampaignsController@perkedit'])->name('perkedit');
-Route::post('/perkupdate/{id}', 'CampaignsController@perkupdate')->name('perkupdate');
-Route::get('/perkdelete/{id}', 'CampaignsController@perkdelete')->name('perkdelete');
+Route::get('/perk/{id}', ['middleware' => 'auth', 'uses' => 'PerkController@perk'])->name('perk');
+Route::get('/perkcreate/{id}', ['middleware' => 'auth', 'uses' => 'PerkController@perkcreate'])->name('perkcreate');
+Route::post('/perkstore/{id}', 'PerkController@perkstore')->name('perkstore');
+Route::get('/perkedit/{id}', ['middleware' => 'auth', 'uses' => 'PerkController@perkedit'])->name('perkedit');
+Route::post('/perkupdate/{id}', 'PerkController@perkupdate')->name('perkupdate');
+Route::get('/perkdelete/{id}', 'PerkController@perkdelete')->name('perkdelete');
 
 //items
-Route::get('/item/{id}', ['middleware' => 'auth', 'uses' => 'CampaignsController@item'])->name('item');
-Route::get('/itemdelete/{id}', 'CampaignsController@itemdelete')->name('itemdelete');
-Route::get('/itemcreate/{id}', ['middleware' => 'auth', 'uses' => 'CampaignsController@itemcreate'])->name('itemcreate');
-Route::post('/itemstore/{id}', 'CampaignsController@itemstore')->name('itemstore');
-Route::get('/itemedit/{id}', ['middleware' => 'auth', 'uses' => 'CampaignsController@itemedit'])->name('itemedit');
-Route::post('/itemupdate/{id}', 'CampaignsController@itemupdate')->name('itemupdate');
+Route::get('/item/{id}', ['middleware' => 'auth', 'uses' => 'ItemController@item'])->name('item');
+Route::get('/itemdelete/{id}', 'ItemController@itemdelete')->name('itemdelete');
+Route::get('/itemcreate/{id}', ['middleware' => 'auth', 'uses' => 'ItemController@itemcreate'])->name('itemcreate');
+Route::post('/itemstore/{id}', 'ItemController@itemstore')->name('itemstore');
+Route::get('/itemedit/{id}', ['middleware' => 'auth', 'uses' => 'ItemController@itemedit'])->name('itemedit');
+Route::post('/itemupdate/{id}', 'ItemController@itemupdate')->name('itemupdate');
 
 //campaign management
-Route::get('/campaignmanager', ['middleware' => 'auth', 'uses' => 'CampaignsController@campaignmanager'])->name('campaignmanager');
-Route::get('/stopcampaign/{id}', 'CampaignsController@stopcampaign')->name('stopcampaign');
-Route::get('/runcampaign/{id}', 'CampaignsController@runcampaign');
-Route::get('/deletecampaign/{id}', 'CampaignsController@deletecampaign')->name('deletecampaign');
+Route::get('/campaignmanager', ['middleware' => 'auth', 'uses' => 'AdminController@campaignmanager'])->name('campaignmanager');
+Route::get('/stopcampaign/{id}', 'AdminController@stopcampaign')->name('stopcampaign');
+Route::get('/runcampaign/{id}', 'AdminController@runcampaign');
+Route::get('/deletecampaign/{id}', 'AdminController@deletecampaign')->name('deletecampaign');
 
 // invester list
 Route::get('/investerlist/{id}', 'CampaignsController@investerlist')->name('investerlist');
 
 //manage categories
-Route::post('/addcategory', ['middleware' => 'auth', 'uses' => 'CampaignsController@addcategory'])->name('addcategory');
-Route::get('/editcategory/{category}', ['middleware' => 'auth', 'uses' => 'CampaignsController@editcategory'])->name('editcategory');
-Route::post('/updatecategory/{id}', 'CampaignsController@updatecategory')->name('updatecategory');
+Route::post('/addcategory', ['middleware' => 'auth', 'uses' => 'CategoriesController@addcategory'])->name('addcategory');
+Route::get('/editcategory/{category}', ['middleware' => 'auth', 'uses' => 'CategoriesController@editcategory'])->name('editcategory');
+Route::post('/updatecategory/{id}', 'CategoriesController@updatecategory')->name('updatecategory');
 
 //finalcial & reports
-Route::get('/financialInformation/{id}', 'CampaignsController@financialInformation')->name('financialInformation');
-Route::post('/financialInformationstore/{id}', 'CampaignsController@financialInformationstore');
-Route::get('/reportCampaign/{id}', 'CampaignsController@reportCampaign')->name('reportCampaign');
-Route::post('/reportSent/{id}', 'CampaignsController@reportSent');
-Route::get('/reportmanager/{id}', 'CampaignsController@reportmanager')->name('reportmanager');
-Route::get('/reportViewByAdmin/{id}', 'CampaignsController@reportViewByAdmin')->name('reportViewByAdmin');
+Route::get('/financialInformation/{id}', 'FinancialInformationController@financialInformation')->name('financialInformation');
+Route::post('/financialInformationstore/{id}', 'FinancialInformationController@financialInformationstore');
+Route::get('/reportCampaign/{id}', 'ReportController@reportCampaign')->name('reportCampaign');
+Route::post('/reportSent/{id}', 'ReportController@reportSent');
+Route::get('/reportmanager/{id}', 'ReportController@reportmanager')->name('reportmanager');
+Route::get('/reportViewByAdmin/{id}', 'ReportController@reportViewByAdmin')->name('reportViewByAdmin');
 Route::get('/overview/{id}', 'CampaignsController@overview');
 
 
 //admin
 Route::get('/admin', ['middleware' => 'auth', 'uses' => 'AdminController@show'])->name('admin');
-Route::get('/categorymanager', ['middleware' => 'auth', 'uses' => 'CampaignsController@categorymanager'])->name('categorymanager');
+Route::get('/categorymanager', ['middleware' => 'auth', 'uses' => 'CategoriesController@categorymanager'])->name('categorymanager');
 Route::get('/users/usermanager', 'UsersController@usermanager')->name('usermanager');
 Route::get('/users/useraccessmanager/{id}', ['middleware' => 'auth', 'uses' => 'UsersController@useraccessmanager'])->name('useraccessmanager');
 Route::get('/users/isadmin/{id}', 'UsersController@isadmin')->name('isadmin');
@@ -100,7 +100,7 @@ Route::post('/users/{user}/password/update', 'UsersController@changePassword');
 
 //categories
 Route::get('/loadMoreCampaign/{lastPriority}/{category}', 'CategoriesController@loadMoreCampaign');
-Route::get('/categories/{category}', 'CategoriesController@show');
+Route::get('/categories/{id}', 'CategoriesController@show');
 Route::get('/discover', 'CategoriesController@discover');
 Route::get('/now-launched', 'CategoriesController@nowLauched');
 Route::get('/ending-soon', 'CategoriesController@endingSoon');

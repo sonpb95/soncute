@@ -29,10 +29,10 @@
 				<li >
 					<a href="{{ url('story/'.$id) }}">2. CHI TIẾT</a> 
 				</li>
-				<li >
+				<li class="active">
 					<a href="{{ url('perk/'.$id) }}">3. GÓI ĐẦU TƯ</a>
 				</li>	
-				<li class="active">
+				<li >
 					<a href="{{ url('item/'.$id) }}">4. SẢN PHẨM</a>
 				</li>
 										

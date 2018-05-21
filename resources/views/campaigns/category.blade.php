@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title',$category->name)
+@section('title',$categories->name)
 @section('header')
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no" />
@@ -27,7 +27,7 @@
          {{--alert("loading data");--}}
          $.ajax({
            type: 'GET',
-           url: "/loadMoreCampaign/" + lastPriority + "/{{$category->id}}",
+           url: "/loadMoreCampaign/" + lastPriority + "/{{$categories->id}}",
          }).done(function(data) {
            //console.log(data);
               if (data != '') {
@@ -46,17 +46,17 @@
         <div class="content grid_9">
             <div class="search-result-page">
                 <div class="top-lbl-val">
-                    <h3 class="common-title">Khám phá / <span class="fc-orange">{{ $category->name }}</span></h3>
+                    <h3 class="common-title">Khám phá / <span class="fc-orange">{{ $categories->name }}</span></h3>
                     <div class="count-result">
-                      @if ($category->id > 0)
-                        <span class="fw-b fc-black">{{ $category->getCampaignCount() }}</span> dự án được tìm thấy trong danh mục này
+                      @if ($categories->id > 0)
+                        <span class="fw-b fc-black">{{ $categories->getCampaignCount() }}</span> dự án được tìm thấy trong danh mục này
                       @endif
                     </div>
                 </div>
                 <div class="list-project-in-category">
                     <div class="lbl-type clearfix">
-                        <h4 class="rs title-lbl"><a href="/categories/{{ $category->id }}" class="be-fc-orange">Phổ biến trong tuần</a></h4>
-                        {{--<a href="/categories/{{ $category->id }}" class="view-all be-fc-orange">Xem tất cả</a>--}}
+                        <h4 class="rs title-lbl"><a href="/categories/{{ $categories->id }}" class="be-fc-orange">Phổ biến trong tuần</a></h4>
+                        {{--<a href="/categories/{{ $categories->id }}" class="view-all be-fc-orange">Xem tất cả</a>--}}
                     </div>
                     <div id="list-project-ajax" class="list-project">
                       @if ($campaigns != "")
@@ -119,7 +119,7 @@
                         <div class="clear"></div>
                     </div>
                 </div><!--end: .list-project-in-category -->
-                @if ($category->id != 0 && $category->getCampaignCount() > 12)
+                @if ($categories->id != 0 && $categories->getCampaignCount() > 12)
                 <p class="rs ta-c">
                     <a id="showmoreprojects" class="btn btn-black btn-load-more">Hiển thị thêm </a>
                 </p>
@@ -130,7 +130,7 @@
             <div class="left-list-category">
                 <h4 class="rs title-nav">Trạng thái</h4>
                 <ul class="rs nav nav-category">
-                  @if ($category->name == "Now lauched")
+                  @if ($categories->name == "Now lauched")
                     <li class="active">
                   @else
                     <li>
@@ -141,7 +141,7 @@
                             <i class="icon iPlugGray"></i>
                         </a>
                     </li>
-                    @if ($category->name == "Ending soon")
+                    @if ($categories->name == "Ending soon")
                       <li class="active">
                     @else
                       <li>
@@ -152,7 +152,7 @@
                             <i class="icon iPlugGray"></i>
                         </a>
                     </li>
-                    @if ($category->name == "Small project")
+                    @if ($categories->name == "Small project")
                       <li class="active">
                     @else
                       <li>
@@ -169,7 +169,7 @@
                 <h4 class="rs title-nav">Danh mục</h4>
                 <ul class="rs nav nav-category">
                   @foreach ($allCategory as $cat)
-                    @if ($cat->id === $category->id)
+                    @if ($cat->id === $categories->id)
                       <li class="active">
                     @else
                       <li>

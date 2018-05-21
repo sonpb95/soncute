@@ -15,4 +15,5 @@ class CategoryRepository extends Repository {
     {
         return 'App\Category';
     }
+	
 }
