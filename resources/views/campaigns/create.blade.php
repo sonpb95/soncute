@@ -80,9 +80,6 @@
                                                 <label>Bạn muốn kêu gọi bao nhiêu vốn cho dự án của mình?</label>
                                                 <input id="goal" name="goal" type="text" placeholder="Đơn vị : vnd" class="form-control">
                                             </div>
-                                            <div class="form-group">
-                                                <label>Tỉ giá 1 usd/vnd hiện tại là {{$exchangeRate}}đ. tỉ giá tại thời điểm này sẽ được lưu lại và sử dụng trong suốt quá trình gọi vốn của dự án.</label>
-                                            </div>
                                             <div>
                                                 <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Tạo Dự Án</strong></button>
                                             </div>

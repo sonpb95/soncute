@@ -74,6 +74,14 @@ abstract class Repository implements RepositoryInterface {
     public function create(array $data) {
         return $this->model->create($data);
     }
+	
+	public function saveModel(array $data)
+    {
+        foreach ($data as $k => $v) {
+            $this->model->$k = $v;
+        }
+        return $this->model->save();
+    }
 
     /**
      * @param array $data

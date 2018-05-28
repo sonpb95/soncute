@@ -88,19 +88,20 @@
         <div class="wrapper wrapper-content animated fadeInRight">
             <div class="row">
                 <div class="col-lg-12">
-						<?php if($alert == 1){ ?>
+						@if (session('alert'))
+
                             <div class="alert alert-danger alert-dismissable">
                                 <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                                 <a class="alert-link" href="#"> Bạn Phải Điền Đầy Đủ Thông Tin Tài Chính</a>.
+                                 <a class="alert-link" href="#"> {{session('alert')}}</a>.
                             </div>
-							<?php } ?>
+						@endif
 							 @if (session('success'))
-									<?php echo('
+									
 								 <div class="alert alert-success alert-dismissable">
 									<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-									 <a class="alert-link" href="#"> '.session('success').'</a>
+									 <a class="alert-link" href="#"> {{session('success')}}</a>
 								</div>
-								');?>
+								
 								@endif
                         <div class="ibox-content">
                             <h2>

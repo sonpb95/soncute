@@ -7,11 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use DateTime;
 use Auth;
 
+/**
+ * Class Campaign
+ * @package App
+ */
 class Campaign extends Model
 {
   use Searchable;
   protected $fillable = [
-    'user_id', 'goal', 'title', 'tagline', 'pitch', 'avatar', 'city','duration' , 'country', 'category_id', 'visible', 'status', 'exchange_rate', 'end_at',
+    'user_id', 'goal', 'title', 'tagline', 'pitch', 'avatar', 'city','duration' , 'country', 'category_id', 'visible', 'status', 'exchange_rate', 'end_at', 'delete_flag'
   ];
 
 	protected $dates = ['end_at', 'start_at'];

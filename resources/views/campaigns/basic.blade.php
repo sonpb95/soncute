@@ -92,12 +92,12 @@
 						
                         <div class="ibox-content">
 						
-							<?php if($alert == 1){ ?>
+					    	@if (session('alert'))
                             <div class="alert alert-danger alert-dismissable">
                                 <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                                 <a class="alert-link" href="#">Không Được Để Trống Avatar.</a>.
+                                 <a class="alert-link" href="#">{{session('alert')}}</a>.
                             </div>
-							<?php } ?>
+							@endif
                             <h2>
                                 <span class="text-navy">Tổng quan </span>
                             </h2>

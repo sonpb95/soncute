@@ -8,7 +8,7 @@ class FinancialInformation extends Model
 {
     protected $fillable = [
 
-        'account_number', 'account_name', 'bank_name'
+       'campaign_id', 'account_number', 'account_name', 'bank_name'
 
     ];
 	

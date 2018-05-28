@@ -92,12 +92,13 @@
                 <div class="col-lg-12">
                     
                         <div class="ibox-content">
-							<?php if($alert == 1){ ?>
-                            <div class="alert alert-danger alert-dismissable">
+                            @if (session('alert'))
+                                 <div class="alert alert-danger alert-dismissable">
                                 <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                                 <a class="alert-link" href="#"> Bạn phải có ít nhất 1 ảnh hoặc video</a>.
+                                 <a class="alert-link" href="#">{{session('alert')}}</a>.
                             </div>
-							<?php } ?>
+
+						    @endif
                             <h2>
                                 <span class="text-navy">Ảnh Hoặc Video về Dự Án </span>
                             </h2>
